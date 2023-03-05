@@ -4,7 +4,11 @@ import {
     PlayCircleOutlined,
     DownloadOutlined,
     AudioMutedOutlined,
+    VideoCameraFilled,
+    AudioFilled,
+
 } from "@ant-design/icons";
+import { BsCameraVideoOffFill } from "react-icons/bs";
 import Axios from "axios";
 import image from '../../Image/R.png'
 const { Title } = Typography;
@@ -13,7 +17,7 @@ function App() {
     const [form] = Form.useForm();
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
-
+    const [hide, sideHide] = useState('hidden');
     const formItemLayout = {
         labelCol: { span: 8 },
         wrapperCol: { span: 8 },
@@ -30,7 +34,7 @@ function App() {
 
     return (
         <>
-            <div style={{ textAlign: "center" }}>
+            <div className="text-center">
                 <div className="flex flex-row ">
 
                     <img className="mt-4 ml-3" src={image} />
@@ -67,51 +71,66 @@ function App() {
                         </Form.Item>
                     </Form>
                 </div>
-                <div className="mt-12 ml-11">
+                <div className="mt-12 ml-11  grid grid-cols-2 gap-4">
                     {data !== null ? (
                         <>
-                            <iframe className=""
-                                width="570"
-                                height="320"
-                                src={`${data.data.url}`}
-                                title="video"
-                            />
-                            <span>{data.data.hey.videoDetails.title}</span>
-                            <div
-                                style={{
-                                    marginTop: "2rem",
-                                    paddingLeft: "10rem",
-                                    paddingRight: "10rem",
-                                }}
+                            <div className="ml-6">
+
+                                <iframe className="mt-3"
+                                    width="570"
+                                    height="320"
+                                    src={`${data.data.url}`}
+                                    title="video"
+
+                                />
+                                <div className="mt-3 mr-12 text-left text-xl font-bold">
+                                    {data.data.title.title}
+                                </div>
+                            </div>
+                            <div className="ml-12 justify-end"
+
+
                             >
-                                <Title level={5}>Avilable Formats</Title>
-                                <br />
-                                <Row gutter={[10, 20]}>
-                                    {data?.data.info.map((value, index) => (
-                                        <Col key={index} xs={24} md={3}>
-                                            <Button
-                                                download
-                                                href={value.url}
-                                                target="_self"
-                                                type="primary"
-                                                ghost
-                                                icon={
-                                                    value.hasAudio === false ? (
-                                                        <AudioMutedOutlined style={{ color: "#FF0000" }} />
-                                                    ) : null
-                                                }
-                                            >
-                                                {value.mimeType.split(";")[0] + "   "}
-                                                {value.hasVideo ? value.height + "p" : ""}
-                                            </Button>
-                                        </Col>
-                                    ))}
-                                </Row>
+                                <div className="ml-12 text-right grid grid-cols-2 gap-4">
+                                    <div className="ml-12">
+
+                                        <Button className="text-2xl font-medium w-600 h-12 m-3">
+                                            Video</Button>
+                                        {data?.data.info.map((value, index) => (
+                                            <span key={index} xs={24} md={3}>
+                                                <Button className="font-medium text-xl w-600 h-12 m-3"
+                                                    download
+                                                    href={value.url}
+                                                    target="_self"
+                                                    type="primary"
+                                                    ghost
+                                                    icon={
+                                                        value.hasVideo === true ? (
+
+                                                            value.hasAudio === true ? (
+
+                                                                <VideoCameraFilled style={{ color: "#FF0000" }} />
+                                                            ) : <BsCameraVideoOffFill style={{ color: "#FF0000" }} />
+                                                        ) : <AudioFilled style={{ color: "#FF0000" }} />
+
+                                                    }
+                                                >
+                                                    {value.mimeType.split(";")[0] + "   "}
+
+
+                                                    {value.hasVideo ? value.height + "p" : ""}
+                                                </Button>
+                                            </span>
+                                        ))}
+                                    </div>
+
+
+
+                                </div>
                             </div>
                         </>
                     ) : (
                         <>
-                            <Title level={4}>SUBSCRIBE NOD YOUTUBE CHANNEL</Title>
                         </>
                     )}
                 </div>

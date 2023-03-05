@@ -19,7 +19,8 @@ app.get("/download", async (req, res) => {
     let data = {
         url: "https://www.youtube.com/embed/" + v_id,
         file: file,
-        hey: name,
+        title: name.videoDetails,
+        relation: name,
         info: info.formats.sort((a, b) => {
             return a.mimeType < b.mimeType;
         }),
