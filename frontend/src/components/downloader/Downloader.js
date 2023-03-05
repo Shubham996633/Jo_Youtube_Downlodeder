@@ -91,37 +91,44 @@ function App() {
 
 
                             >
-                                <div className="ml-12 text-right grid grid-cols-2 gap-4">
-                                    <div className="ml-12">
+                                <Button className="text-2xl font-medium h-12 m-3">
+                                    Video</Button>
+                                <Button className="text-2xl font-medium h-12 m-3">
+                                    Audio</Button>
+                                <div className="ml-12 text-right ">
+                                    <div className="ml-12 ">
 
-                                        <Button className="text-2xl font-medium w-600 h-12 m-3">
-                                            Video</Button>
-                                        {data?.data.info.map((value, index) => (
-                                            <span key={index} xs={24} md={3}>
-                                                <Button className="font-medium text-xl w-600 h-12 m-3"
-                                                    download
-                                                    href={value.url}
-                                                    target="_self"
-                                                    type="primary"
-                                                    ghost
-                                                    icon={
-                                                        value.hasVideo === true ? (
-
-                                                            value.hasAudio === true ? (
-
-                                                                <VideoCameraFilled style={{ color: "#FF0000" }} />
-                                                            ) : <BsCameraVideoOffFill style={{ color: "#FF0000" }} />
-                                                        ) : <AudioFilled style={{ color: "#FF0000" }} />
-
-                                                    }
-                                                >
-                                                    {value.mimeType.split(";")[0] + "   "}
+                                        <div className="grid grid-cols-2 grid-flow-row gap-2 items-center">
 
 
-                                                    {value.hasVideo ? value.height + "p" : ""}
-                                                </Button>
-                                            </span>
-                                        ))}
+                                            {data?.data.info.map((value, index) => (
+                                                <span key={index} xs={24} md={3}>
+                                                    <Button className="flex  items-center justify-around font-medium text-xl h-12 w-64 mb-6 gap-3"
+                                                        download
+                                                        href={value.url}
+                                                        target="_self"
+                                                        type="primary"
+                                                        ghost
+                                                        icon={
+                                                            value.hasVideo === true ? (
+
+                                                                value.hasAudio === true ? (
+
+                                                                    <VideoCameraFilled style={{ color: "#FF0000" }} />
+                                                                ) : <BsCameraVideoOffFill style={{ color: "#FF0000" }} />
+                                                            ) : <AudioFilled style={{ color: "#FF0000" }} />
+
+                                                        }
+                                                    >
+                                                        {value.mimeType.split(";")[0] + "   "}
+
+
+                                                        {value.hasVideo ? value.height + "p" : ""}
+                                                    </Button>
+                                                </span>
+                                            ))}
+                                        </div>
+
                                     </div>
 
 
