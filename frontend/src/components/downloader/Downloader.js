@@ -1,11 +1,7 @@
 import React, { useState } from "react";
-import { Typography, Form, Input, Button, Row, Col } from "antd";
+import { Typography, Form, Input, Button, } from "antd";
 import {
-    PlayCircleOutlined,
     DownloadOutlined,
-    AudioMutedOutlined,
-    VideoCameraFilled,
-    AudioFilled,
 
 } from "@ant-design/icons";
 import { BsCameraVideoOffFill, BsCameraVideoFill } from "react-icons/bs";
@@ -32,7 +28,7 @@ function App() {
         setLoading(true);
         console.log(values)
         const data = await Axios.get(
-            `http://localhost:4000/download?url=${values.url}`
+            `https://youtube-downloader-4vbg.onrender.com/download?url=${values.url}`
         );
         setData(data);
         setRelated(data?.data.relation.related_videos);
@@ -94,15 +90,15 @@ function App() {
                         </Form.Item>
                     </Form>
                 </div>
-                <div className="mt-12 ml-11  grid grid-cols-1 gap-4">
+                <div className="mt-12 ml-11  grid grid-cols-1 gap-4 lg:gap-2 lg:ml-6">
 
 
                     {data !== null ? (
                         <>
 
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-2 gap-4 lg:gap-2 md:grid-cols-1 lg:grid-cols-2">
 
-                                <div className="ml-6  ">
+                                <div className="ml-6  xl:ml-2 lg:ml-2">
 
                                     <iframe className="mt-3 border shadow-lg shadow-indigo-500/40 rounded-md p-2 hover:scale-105 ease-in-out duration-300 cursor-pointer"
                                         width="570"
@@ -120,10 +116,10 @@ function App() {
 
                                 >
 
-                                    <div className="ml-12 text-left ">
-                                        <div className="ml-12 ">
+                                    <div className="ml-12 text-left xl:ml-6 lg:ml-3 ">
+                                        <div className="ml-12 xl:ml-6 lg:ml-3 ">
 
-                                            <div className="grid grid-cols-3 grid-flow-row gap-2 items-center">
+                                            <div className="grid grid-cols-3 grid-flow-row gap-2 items-center xl:grid-cols-3 lg:grid-cols-2">
 
 
                                                 {data?.data.info.map((value, index) => (
@@ -134,7 +130,7 @@ function App() {
                                                             target="_blank"
                                                             type="primary"
 
-                                                            className={`${value.hasVideo === true ? (value.hasAudio === true ? ('bg-green-700') : 'bg-sky-600') : 'bg-pink-500'} flex  items-center justify-around font-medium text-xl h-24 w-48 mb-6`}
+                                                            className={`${value.hasVideo === true ? (value.hasAudio === true ? ('bg-green-700') : 'bg-sky-600') : 'bg-pink-500'} flex  items-center justify-around font-medium text-xl h-16 w-48 mb-6 xl:h-16`}
                                                             icon={
                                                                 value.hasVideo === true ? (
 
@@ -195,9 +191,16 @@ function App() {
                     )}
                 </div>
 
+                <div className="text-center text-xl font-bold m-6 text-sky-600">
+                    <h1>2023 JoYoutubeDownloader</h1>
+
+                </div>
+
 
 
             </div>
+
+
         </>
     );
 }
