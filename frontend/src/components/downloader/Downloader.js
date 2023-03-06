@@ -8,16 +8,21 @@ import {
     AudioFilled,
 
 } from "@ant-design/icons";
-import { BsCameraVideoOffFill } from "react-icons/bs";
+import { BsCameraVideoOffFill, BsCameraVideoFill } from "react-icons/bs";
+import { MdAudiotrack } from "react-icons/md";
+
 import Axios from "axios";
 import image from '../../Image/R.png'
 const { Title } = Typography;
+
+
 
 function App() {
     const [form] = Form.useForm();
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [hide, sideHide] = useState('hidden');
+    const [related, setRelated] = useState([]);
+    const [inputText, setInputText] = useState('')
     const formItemLayout = {
         labelCol: { span: 8 },
         wrapperCol: { span: 8 },
@@ -25,11 +30,28 @@ function App() {
     console.log(data)
     async function submitForm(values) {
         setLoading(true);
+        console.log(values)
         const data = await Axios.get(
             `http://localhost:4000/download?url=${values.url}`
         );
         setData(data);
+        setRelated(data?.data.relation.related_videos);
+        setInputText(values.url)
         setLoading(false);
+
+    }
+
+
+    const handleClick = (e) => {
+        console.log(e);
+        var content = {
+            url: `https://www.youtube.com/watch?v=${e}`,
+            id: e
+        };
+        console.log(content.url)
+        submitForm(content)
+        window.scrollTo(0, 0)
+
     }
 
     return (
@@ -55,6 +77,7 @@ function App() {
 
                                 placeholder="Paste your video link here"
                                 required={true}
+                                value={inputText}
                             />
                         </Form.Item>
                         <Form.Item>
@@ -71,69 +94,99 @@ function App() {
                         </Form.Item>
                     </Form>
                 </div>
-                <div className="mt-12 ml-11  grid grid-cols-2 gap-4">
+                <div className="mt-12 ml-11  grid grid-cols-1 gap-4">
+
+
                     {data !== null ? (
                         <>
-                            <div className="ml-6">
 
-                                <iframe className="mt-3"
-                                    width="570"
-                                    height="320"
-                                    src={`${data.data.url}`}
-                                    title="video"
+                            <div className="grid grid-cols-2 gap-4">
 
-                                />
-                                <div className="mt-3 mr-12 text-left text-xl font-bold">
-                                    {data.data.title.title}
+                                <div className="ml-6  ">
+
+                                    <iframe className="mt-3 border shadow-lg shadow-indigo-500/40 rounded-md p-2 hover:scale-105 ease-in-out duration-300 cursor-pointer"
+                                        width="570"
+                                        height="320"
+                                        src={`${data.data.url}`}
+                                        title="video"
+
+                                    />
+                                    <div className="mt-3 mr-12 text-left text-xl font-bold">
+                                        {data.data.title.title}
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="ml-12 justify-end"
+                                <div className="ml-12 justify-end"
 
 
-                            >
-                                <Button className="text-2xl font-medium h-12 m-3">
-                                    Video</Button>
-                                <Button className="text-2xl font-medium h-12 m-3">
-                                    Audio</Button>
-                                <div className="ml-12 text-right ">
-                                    <div className="ml-12 ">
+                                >
 
-                                        <div className="grid grid-cols-2 grid-flow-row gap-2 items-center">
+                                    <div className="ml-12 text-left ">
+                                        <div className="ml-12 ">
+
+                                            <div className="grid grid-cols-3 grid-flow-row gap-2 items-center">
 
 
-                                            {data?.data.info.map((value, index) => (
-                                                <span key={index} xs={24} md={3}>
-                                                    <Button className="flex  items-center justify-around font-medium text-xl h-12 w-64 mb-6 gap-3"
-                                                        download
-                                                        href={value.url}
-                                                        target="_self"
-                                                        type="primary"
-                                                        ghost
-                                                        icon={
-                                                            value.hasVideo === true ? (
+                                                {data?.data.info.map((value, index) => (
+                                                    <span key={index} xs={24} md={3}>
+                                                        <Button
+                                                            download
+                                                            href={value.url}
+                                                            target="_blank"
+                                                            type="primary"
 
-                                                                value.hasAudio === true ? (
+                                                            className={`${value.hasVideo === true ? (value.hasAudio === true ? ('bg-green-700') : 'bg-sky-600') : 'bg-pink-500'} flex  items-center justify-around font-medium text-xl h-24 w-48 mb-6`}
+                                                            icon={
+                                                                value.hasVideo === true ? (
 
-                                                                    <VideoCameraFilled style={{ color: "#FF0000" }} />
-                                                                ) : <BsCameraVideoOffFill style={{ color: "#FF0000" }} />
-                                                            ) : <AudioFilled style={{ color: "#FF0000" }} />
+                                                                    value.hasAudio === true ? (
 
-                                                        }
-                                                    >
-                                                        {value.mimeType.split(";")[0] + "   "}
+                                                                        <BsCameraVideoFill style={{ color: "#ffffff" }} />
+                                                                    ) : <BsCameraVideoOffFill style={{ color: "#ffffff" }} />
+                                                                ) : <MdAudiotrack style={{ color: "#ffffff" }} />
+
+                                                            }
+                                                        >
+                                                            {value.container + " "}
 
 
-                                                        {value.hasVideo ? value.height + "p" : ""}
-                                                    </Button>
-                                                </span>
-                                            ))}
+                                                            {value.hasVideo ? value.height + "p" : ""}
+                                                        </Button>
+                                                    </span>
+                                                ))}
+                                            </div>
+
                                         </div>
 
+
+
+                                    </div>
+                                    <h1 className="text-3xl text-left place-self-start font-bold mt-3 mb-6 -ml-36" >Related Videos </h1>
+                                </div>
+                            </div>
+
+
+                            <div className="grid grid-cols-4 gap-4  ">
+
+                                {related.map((value, index) => (
+
+
+                                    <div className={`flex flex-col items-center justify-between  border shadow-lg shadow-indigo-500/40 rounded-md p-2 hover:scale-105 ease-in-out duration-300 cursor-pointer ${value.id}`}
+                                        onClick={() => handleClick(value.id)}
+                                        key={value.id}
+                                    >
+
+                                        <img className="w-96 h-76 object-contain"
+
+
+                                            src={`${value.thumbnails[1].url}`}
+                                            title={`${value.title}`}
+
+                                        />
+                                        <span>{value.title}</span>
                                     </div>
 
 
-
-                                </div>
+                                ))}
                             </div>
                         </>
                     ) : (
@@ -141,6 +194,9 @@ function App() {
                         </>
                     )}
                 </div>
+
+
+
             </div>
         </>
     );
